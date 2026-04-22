@@ -239,10 +239,18 @@
   /* Row 4: photo slideshow spans full */
   .wi-photos { grid-column: 1 / -1; }
 
-  /* Video iframe fills container */
-  .work-item iframe {
-    position: absolute; inset: 0; width: 100%; height: 100%;
-    border: none; pointer-events: none;
+  /* Video thumbnail + click-to-open */
+  .video-link {
+    position: absolute; inset: 0; display: block; cursor: none;
+  }
+  .vid-thumb {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.6s ease, filter 0.4s ease;
+    filter: brightness(0.7) contrast(1.05);
+  }
+  .work-item:hover .vid-thumb {
+    transform: scale(1.04);
+    filter: brightness(0.45) contrast(1.1);
   }
   /* Image fill */
   .work-item img.fill {
@@ -367,10 +375,10 @@
 
   /* CONTACT */
   #contact { padding: 120px 48px 80px; }
-  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+  .contact-centered { max-width: 680px; margin: 0 auto; }
   .contact-headline { font-family: 'Bebas Neue', sans-serif; font-size: clamp(52px,7vw,110px); line-height: 0.9; margin-bottom: 24px; }
   .contact-headline em { font-family: 'Instrument Serif', serif; font-style: italic; }
-  .contact-sub { color: var(--grey-light); font-size: 15px; line-height: 1.7; margin-bottom: 56px; max-width: 380px; }
+  .contact-sub { color: var(--grey-light); font-size: 15px; line-height: 1.7; margin-bottom: 56px; }
   .contact-channels { display: flex; flex-direction: column; }
   .channel-link { display: flex; align-items: center; gap: 16px; padding: 20px 0; border-bottom: 1px solid var(--border); text-decoration: none; color: var(--grey-light); font-size: 14px; transition: color 0.25s; cursor: none; }
   .channel-link:first-child { border-top: 1px solid var(--border); }
@@ -385,16 +393,7 @@
   .channel-arrow { font-size: 18px; color: var(--grey); transition: transform 0.25s, color 0.25s; }
   .channel-link:hover .channel-arrow { transform: translateX(4px); color: var(--white); }
 
-  .contact-form { display: flex; flex-direction: column; gap: 0; }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
-  .form-field { position: relative; }
-  .form-field label { display: block; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--grey); margin-bottom: 10px; }
-  .form-field input, .form-field textarea, .form-field select { width: 100%; background: var(--black-2); border: 1px solid var(--border); color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 300; padding: 16px 20px; outline: none; transition: border-color 0.25s; margin-bottom: 2px; -webkit-appearance: none; cursor: none; }
-  .form-field input:focus, .form-field textarea:focus, .form-field select:focus { border-color: var(--white); }
-  .form-field textarea { resize: none; height: 140px; }
-  .form-field select option { background: var(--black-2); }
-  .form-submit { width: 100%; padding: 18px; background: var(--white); color: var(--black); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; border: none; cursor: none; transition: opacity 0.25s; margin-top: 2px; }
-  .form-submit:hover { opacity: 0.88; }
+
 
   /* FOOTER */
   footer { border-top: 1px solid var(--border); padding: 36px 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
@@ -406,7 +405,7 @@
   @media (max-width: 1024px) {
     .solutions-grid { grid-template-columns: repeat(2,1fr); }
     .process-grid { grid-template-columns: 1fr; }
-    .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+    .about-grid { grid-template-columns: 1fr; gap: 48px; }
     .wi-l1 { grid-column: 1 / span 12; }
     .wi-l2 { grid-column: 1 / span 12; }
     .wi-v1, .wi-v2, .wi-v3, .wi-v4, .wi-v5, .wi-v6, .wi-v7, .wi-v8 { grid-column: span 6; }
@@ -425,7 +424,6 @@
     .wi-l1, .wi-l2 { grid-column: 1 / -1; }
     .wi-v1, .wi-v2, .wi-v3, .wi-v4, .wi-v5, .wi-v6, .wi-v7, .wi-v8 { grid-column: span 6; }
     .testimonials-grid { grid-template-columns: 1fr; }
-    .form-row { grid-template-columns: 1fr; }
     footer { flex-direction: column; align-items: flex-start; }
     .footer-tagline { display: none; }
     body { cursor: auto; }
@@ -564,7 +562,9 @@
 
     <!-- Row 1: 2 Landscape videos -->
     <div class="work-item wi-l wi-l1 reveal">
-      <iframe src="https://drive.google.com/file/d/1AtTRNJ0rK1EpD_ChDyfSE2j7yKBVoJMi/preview" allow="autoplay" allowfullscreen></iframe>
+      <a href="https://drive.google.com/file/d/1AtTRNJ0rK1EpD_ChDyfSE2j7yKBVoJMi/view" target="_blank" rel="noopener" class="video-link" aria-label="Watch Club Trailer">
+        <img class="vid-thumb" src="https://drive.google.com/thumbnail?id=1AtTRNJ0rK1EpD_ChDyfSE2j7yKBVoJMi&sz=w800" alt="Club Trailer" loading="lazy">
+      </a>
       <div class="work-play-icon"><svg viewBox="0 0 18 18"><path d="M4 3l12 6-12 6V3z"/></svg></div>
       <div class="work-overlay">
         <div class="work-label">Club Trailer</div>
@@ -573,7 +573,9 @@
     </div>
 
     <div class="work-item wi-l wi-l2 reveal" style="transition-delay:0.08s">
-      <iframe src="https://drive.google.com/file/d/1QNWMKKbxc6EdniahyJXCFpDhm286GQYa/preview" allow="autoplay" allowfullscreen></iframe>
+      <a href="https://drive.google.com/file/d/1QNWMKKbxc6EdniahyJXCFpDhm286GQYa/view" target="_blank" rel="noopener" class="video-link" aria-label="Watch Brand Ad">
+        <img class="vid-thumb" src="https://drive.google.com/thumbnail?id=1QNWMKKbxc6EdniahyJXCFpDhm286GQYa&sz=w800" alt="Brand Ad" loading="lazy">
+      </a>
       <div class="work-play-icon"><svg viewBox="0 0 18 18"><path d="M4 3l12 6-12 6V3z"/></svg></div>
       <div class="work-overlay">
         <div class="work-label">Brand Ad</div>
@@ -583,7 +585,9 @@
 
     <!-- Row 2: 4 Vertical videos -->
     <div class="work-item wi-v wi-v1 reveal" style="transition-delay:0.05s">
-      <iframe src="https://drive.google.com/file/d/11LD3hcXZspr8kAQmewe25j6TUBV7wGEZ/preview" allow="autoplay" allowfullscreen></iframe>
+      <a href="https://drive.google.com/file/d/11LD3hcXZspr8kAQmewe25j6TUBV7wGEZ/view" target="_blank" rel="noopener" class="video-link" aria-label="Watch Brand Content">
+        <img class="vid-thumb" src="https://drive.google.com/thumbnail?id=11LD3hcXZspr8kAQmewe25j6TUBV7wGEZ&sz=w800" alt="Brand Content" loading="lazy">
+      </a>
       <div class="work-play-icon"><svg viewBox="0 0 18 18"><path d="M4 3l12 6-12 6V3z"/></svg></div>
       <div class="work-overlay">
         <div class="work-label">Brand Content</div>
@@ -592,7 +596,9 @@
     </div>
 
     <div class="work-item wi-v wi-v2 reveal" style="transition-delay:0.1s">
-      <iframe src="https://drive.google.com/file/d/1VI96WTXYEdbvtzp8DcgmOt1UXToWFEai/preview" allow="autoplay" allowfullscreen></iframe>
+      <a href="https://drive.google.com/file/d/1VI96WTXYEdbvtzp8DcgmOt1UXToWFEai/view" target="_blank" rel="noopener" class="video-link" aria-label="Watch Motion Graphics Animation">
+        <img class="vid-thumb" src="https://drive.google.com/thumbnail?id=1VI96WTXYEdbvtzp8DcgmOt1UXToWFEai&sz=w800" alt="Motion Graphics Animation" loading="lazy">
+      </a>
       <div class="work-play-icon"><svg viewBox="0 0 18 18"><path d="M4 3l12 6-12 6V3z"/></svg></div>
       <div class="work-overlay">
         <div class="work-label">Motion Graphics Animation</div>
@@ -601,7 +607,9 @@
     </div>
 
     <div class="work-item wi-v wi-v3 reveal" style="transition-delay:0.15s">
-      <iframe src="https://drive.google.com/file/d/1Jtk53motbSQSmJv9sgbVvi5d5d-2W4fE/preview" allow="autoplay" allowfullscreen></iframe>
+      <a href="https://drive.google.com/file/d/1Jtk53motbSQSmJv9sgbVvi5d5d-2W4fE/view" target="_blank" rel="noopener" class="video-link" aria-label="Watch Podcast Clipping">
+        <img class="vid-thumb" src="https://drive.google.com/thumbnail?id=1Jtk53motbSQSmJv9sgbVvi5d5d-2W4fE&sz=w800" alt="Podcast Clipping" loading="lazy">
+      </a>
       <div class="work-play-icon"><svg viewBox="0 0 18 18"><path d="M4 3l12 6-12 6V3z"/></svg></div>
       <div class="work-overlay">
         <div class="work-label">Podcast Clipping</div>
@@ -610,7 +618,9 @@
     </div>
 
     <div class="work-item wi-v wi-v4 reveal" style="transition-delay:0.2s">
-      <iframe src="https://drive.google.com/file/d/1ord0U6uLMySDN5_Hc2tAvnBbqkxRQ0Pq/preview" allow="autoplay" allowfullscreen></iframe>
+      <a href="https://drive.google.com/file/d/1ord0U6uLMySDN5_Hc2tAvnBbqkxRQ0Pq/view" target="_blank" rel="noopener" class="video-link" aria-label="Watch Ad Trailer">
+        <img class="vid-thumb" src="https://drive.google.com/thumbnail?id=1ord0U6uLMySDN5_Hc2tAvnBbqkxRQ0Pq&sz=w800" alt="Ad Trailer" loading="lazy">
+      </a>
       <div class="work-play-icon"><svg viewBox="0 0 18 18"><path d="M4 3l12 6-12 6V3z"/></svg></div>
       <div class="work-overlay">
         <div class="work-label">Ad Trailer</div>
@@ -620,7 +630,9 @@
 
     <!-- Row 3: 4 more Vertical videos -->
     <div class="work-item wi-v wi-v5 reveal" style="transition-delay:0.05s">
-      <iframe src="https://drive.google.com/file/d/1YZtFsxnd5SxUX0TJvC4e1C9TUKptNW8R/preview" allow="autoplay" allowfullscreen></iframe>
+      <a href="https://drive.google.com/file/d/1YZtFsxnd5SxUX0TJvC4e1C9TUKptNW8R/view" target="_blank" rel="noopener" class="video-link" aria-label="Watch Creator Content">
+        <img class="vid-thumb" src="https://drive.google.com/thumbnail?id=1YZtFsxnd5SxUX0TJvC4e1C9TUKptNW8R&sz=w800" alt="Creator Content" loading="lazy">
+      </a>
       <div class="work-play-icon"><svg viewBox="0 0 18 18"><path d="M4 3l12 6-12 6V3z"/></svg></div>
       <div class="work-overlay">
         <div class="work-label">Creator Content</div>
@@ -629,7 +641,9 @@
     </div>
 
     <div class="work-item wi-v wi-v6 reveal" style="transition-delay:0.1s">
-      <iframe src="https://drive.google.com/file/d/1yU7QLKRHUjHbXMM6XX9D_HXMxrJCT1Gk/preview" allow="autoplay" allowfullscreen></iframe>
+      <a href="https://drive.google.com/file/d/1yU7QLKRHUjHbXMM6XX9D_HXMxrJCT1Gk/view" target="_blank" rel="noopener" class="video-link" aria-label="Watch Creator Content">
+        <img class="vid-thumb" src="https://drive.google.com/thumbnail?id=1yU7QLKRHUjHbXMM6XX9D_HXMxrJCT1Gk&sz=w800" alt="Creator Content" loading="lazy">
+      </a>
       <div class="work-play-icon"><svg viewBox="0 0 18 18"><path d="M4 3l12 6-12 6V3z"/></svg></div>
       <div class="work-overlay">
         <div class="work-label">Creator Content</div>
@@ -638,7 +652,9 @@
     </div>
 
     <div class="work-item wi-v wi-v7 reveal" style="transition-delay:0.15s">
-      <iframe src="https://drive.google.com/file/d/1vkWmLJbzNQ4VB9fR3h5Se3FZ5K36TfVH/preview" allow="autoplay" allowfullscreen></iframe>
+      <a href="https://drive.google.com/file/d/1vkWmLJbzNQ4VB9fR3h5Se3FZ5K36TfVH/view" target="_blank" rel="noopener" class="video-link" aria-label="Watch Travel Content">
+        <img class="vid-thumb" src="https://drive.google.com/thumbnail?id=1vkWmLJbzNQ4VB9fR3h5Se3FZ5K36TfVH&sz=w800" alt="Travel Content" loading="lazy">
+      </a>
       <div class="work-play-icon"><svg viewBox="0 0 18 18"><path d="M4 3l12 6-12 6V3z"/></svg></div>
       <div class="work-overlay">
         <div class="work-label">Travel Content</div>
@@ -647,7 +663,9 @@
     </div>
 
     <div class="work-item wi-v wi-v8 reveal" style="transition-delay:0.2s">
-      <iframe src="https://drive.google.com/file/d/1ZTrTKikZQEljh9do3ndZ-WhcZpjilbDx/preview" allow="autoplay" allowfullscreen></iframe>
+      <a href="https://drive.google.com/file/d/1ZTrTKikZQEljh9do3ndZ-WhcZpjilbDx/view" target="_blank" rel="noopener" class="video-link" aria-label="Watch Story Edits">
+        <img class="vid-thumb" src="https://drive.google.com/thumbnail?id=1ZTrTKikZQEljh9do3ndZ-WhcZpjilbDx&sz=w800" alt="Story Edits" loading="lazy">
+      </a>
       <div class="work-play-icon"><svg viewBox="0 0 18 18"><path d="M4 3l12 6-12 6V3z"/></svg></div>
       <div class="work-overlay">
         <div class="work-label">Story Edits</div>
@@ -819,90 +837,53 @@
 
 <!-- CONTACT -->
 <section id="contact">
-  <div class="contact-grid">
-    <div class="contact-left reveal">
-      <div class="section-label">Contact</div>
-      <h2 class="contact-headline">Let's <em>Build</em><br>Something<br>Real.</h2>
-      <p class="contact-sub">Tell us about your brand and what you're building. We'll get back to you within 24 hours — no fluff, just a straight conversation.</p>
-      <div class="contact-channels">
-        <!-- WhatsApp -->
-        <a href="https://wa.me/918088443747" class="channel-link" target="_blank" rel="noopener">
-          <div class="channel-icon">
-            <svg viewBox="0 0 24 24" fill="var(--grey-light)" color="var(--grey-light)">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-            </svg>
-          </div>
-          <div class="channel-info">
-            <div class="channel-name">WhatsApp</div>
-            <div class="channel-handle">+91 80884 43747</div>
-          </div>
-          <div class="channel-arrow">→</div>
-        </a>
-        <!-- Instagram -->
-        <a href="https://www.instagram.com/driftloop.media/" class="channel-link" target="_blank" rel="noopener">
-          <div class="channel-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="var(--grey-light)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-            </svg>
-          </div>
-          <div class="channel-info">
-            <div class="channel-name">Instagram</div>
-            <div class="channel-handle">@driftloop.media</div>
-          </div>
-          <div class="channel-arrow">→</div>
-        </a>
-        <!-- Email -->
-        <a href="mailto:driftloopmedia@gmail.com" class="channel-link">
-          <div class="channel-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="var(--grey-light)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-              <polyline points="22,6 12,13 2,6"/>
-            </svg>
-          </div>
-          <div class="channel-info">
-            <div class="channel-name">Email</div>
-            <div class="channel-handle">driftloopmedia@gmail.com</div>
-          </div>
-          <div class="channel-arrow">→</div>
-        </a>
-      </div>
-    </div>
-
-    <div class="contact-right reveal" style="transition-delay:0.15s">
-      <div class="contact-form">
-        <div class="form-row">
-          <div class="form-field">
-            <label>Your Name</label>
-            <input type="text" placeholder="Your name">
-          </div>
-          <div class="form-field">
-            <label>Email Address</label>
-            <input type="email" placeholder="you@brand.com">
-          </div>
+  <div class="contact-centered">
+    <div class="section-label reveal">Contact</div>
+    <h2 class="contact-headline reveal">Let's <em>Build</em><br>Something Real.</h2>
+    <p class="contact-sub reveal">Tell us about your brand and what you're building. We'll get back to you within 24 hours — no fluff, just a straight conversation.</p>
+    <div class="contact-channels reveal" style="transition-delay:0.15s">
+      <!-- WhatsApp -->
+      <a href="https://wa.me/918088443747" class="channel-link" target="_blank" rel="noopener">
+        <div class="channel-icon">
+          <svg viewBox="0 0 24 24" fill="var(--grey-light)">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
         </div>
-        <div class="form-field">
-          <label>Brand / Company</label>
-          <input type="text" placeholder="Your brand name">
+        <div class="channel-info">
+          <div class="channel-name">WhatsApp</div>
+          <div class="channel-handle">+91 80884 43747</div>
         </div>
-        <div class="form-field">
-          <label>What Are You Looking For?</label>
-          <select>
-            <option value="" disabled selected>Select a service</option>
-            <option>Videography</option>
-            <option>Post Production</option>
-            <option>Social Media Content Production</option>
-            <option>Brand &amp; Creator Scaling</option>
-            <option>Full Production (End-to-End)</option>
-          </select>
+        <div class="channel-arrow">→</div>
+      </a>
+      <!-- Instagram -->
+      <a href="https://www.instagram.com/driftloop.media/" class="channel-link" target="_blank" rel="noopener">
+        <div class="channel-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--grey-light)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+          </svg>
         </div>
-        <div class="form-field">
-          <label>Tell Us About Your Project</label>
-          <textarea placeholder="Briefly describe your brand, your goals, and what you're trying to build..."></textarea>
+        <div class="channel-info">
+          <div class="channel-name">Instagram</div>
+          <div class="channel-handle">@driftloop.media</div>
         </div>
-        <button class="form-submit" onclick="handleSubmit(event)">Send Message →</button>
-      </div>
+        <div class="channel-arrow">→</div>
+      </a>
+      <!-- Email -->
+      <a href="mailto:driftloopmedia@gmail.com" class="channel-link">
+        <div class="channel-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--grey-light)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </div>
+        <div class="channel-info">
+          <div class="channel-name">Email</div>
+          <div class="channel-handle">driftloopmedia@gmail.com</div>
+        </div>
+        <div class="channel-arrow">→</div>
+      </a>
     </div>
   </div>
 </section>
@@ -969,12 +950,7 @@
   ss.addEventListener('mouseenter', () => { stopTimer(); startTimer(); });
   ss.addEventListener('mouseleave', startTimer);
 
-  // Form submit
-  function handleSubmit(e){
-    e.preventDefault();const btn=e.target;
-    btn.textContent='Message Sent ✓';btn.style.background='#1a1a1a';btn.style.color='#888';
-    setTimeout(()=>{btn.textContent='Send Message →';btn.style.background='';btn.style.color='';},3000);
-  }
+
 </script>
 </body>
 </html>
